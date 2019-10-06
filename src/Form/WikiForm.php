@@ -7,6 +7,13 @@ use Drupal\Core\Form\FormStateInterface;
 
 class WikiForm extends FormBase {
 
+    /*
+     *
+     * protected var to store array from wikipedia service
+     * in order to use it by submit function o term by url parameter
+     *
+     */
+    protected $markup;
 
     /**
      *
@@ -40,6 +47,14 @@ class WikiForm extends FormBase {
          ];
        }
 
+      if (!empty($parameter)){
+        $this->getWikiData($parameter);
+        // set page title
+        $request = \Drupal::request();
+        if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+          $route->setDefault('_title', $parameter);
+        }
+      }
 
       $form['search'] = [
         '#type' => 'textfield',
@@ -59,12 +74,12 @@ class WikiForm extends FormBase {
 
        $form['extract'] = [
           '#type' => 'markup',
-          '#markup' =>  $form_state->getValue('extract',''),
+          '#markup' =>  $this->markup,
        ];
 
        $form['#theme'] = 'leo_form_wikipedia';
 
-        return $form;
+       return $form;
 
     }
 
@@ -81,8 +96,8 @@ class WikiForm extends FormBase {
       // Get the term to search
       $wiki_term = $form_state->getValue('search');
 
-      $markup = $this->getWikiData($wiki_term);
-      $form_state->setValueForElement($form['extract'], $markup);
+      // search wikipedia for term
+      $this->getWikiData($wiki_term);
       $form_state->setRebuild(True);
     }
 
@@ -94,7 +109,7 @@ class WikiForm extends FormBase {
      * @return array
      *   All the data from wikipedia
      */
-    private function  getWikiData($wiki_term) {
+    private function getWikiData($wiki_term) {
       $client = \Drupal::service('leo_form_wikipedia.client');
 
       // Search Wikipedia for a page matching the term
@@ -102,11 +117,12 @@ class WikiForm extends FormBase {
 
       // If no match was found, the result will be empty.
       if (empty($wiki_data)) {
-        return;
+        $this->markup = '';
       }
 
       // markup that contains the extract with
       // a link back to the Wikipedia source document.
-      return $client->getMarkup($wiki_data);
+      $this->markup = $client->getMarkup($wiki_data);
+
     }
 }
