@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains leo_form_wikipedia.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function leo_form_wikipedia_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the leo_form_wikipedia module.
+    case 'help.page.leo_form_wikipedia':
+      $output = '';
+      $output .= '<h3>' . t('About Wikipedia Search') . '</h3>';
+      $output .= '<p>' . t('A user can either enter a value in the form field or provide a url parameter (/wiki/[parameter]).
+                            If a URL parameter is provided then the page displays wikipedia articles containing the parameter in the title.
+                            If no parameter is provided, then the page displays wikipedia articles for the term provided in the "Search" form field.
+                            The page will display the term that is being searched.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+

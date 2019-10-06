@@ -1,0 +1,9 @@
+leo_form_wikipedia.wiki:
+  path: '/wiki/{parameter}'
+  defaults:
+    _form: '\Drupal\leo_form_wikipedia\Form\WikiForm'
+    _title: 'WIKI'
+    parameter: ''
+  requirements:
+    _permission: 'access content'
+    
