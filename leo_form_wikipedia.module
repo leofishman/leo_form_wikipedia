@@ -26,3 +26,13 @@ function leo_form_wikipedia_help($route_name, RouteMatchInterface $route_match) 
   }
 }
 
+/**
+ * Implements hook_theme().
+ */
+function leo_form_wikipedia_theme($existing, $type, $theme, $path) {
+  return [
+    'leo_form_wikipedia' => [
+      'render element' => 'form',
+    ],
+  ];
+}

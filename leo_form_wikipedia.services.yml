@@ -1,0 +1,4 @@
+services:
+  leo_form_wikipedia.client:
+    class: Drupal\leo_form_wikipedia\WikipediaClient
+    arguments: ['@http_client']
