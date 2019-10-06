@@ -7,13 +7,23 @@ use Drupal\Core\Form\FormStateInterface;
 
 class WikiForm extends FormBase {
 
-    /*
+    /**
+     * @var string
      *
      * protected var to store array from wikipedia service
      * in order to use it by submit function o term by url parameter
      *
      */
     protected $markup;
+
+     /**
+      * @var boolean
+      *
+      * protected var to store if search is by form (0) or querystring (1)
+      *
+      */
+     protected $query_type;
+
 
     /**
      *
@@ -47,7 +57,7 @@ class WikiForm extends FormBase {
          ];
        }
 
-      if (!empty($parameter)){
+      if (!empty($parameter) && (!$this->query_type)){
         $this->getWikiData($parameter);
         // set page title
         $request = \Drupal::request();
@@ -59,7 +69,7 @@ class WikiForm extends FormBase {
       $form['search'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Search in Wikipedia'),
-        '#default_value' => $parameter,
+        '#default_value' => $form_state->getValue('search',$parameter),
         '#attributes' => array(
           'placeholder' => t('Retrieve from wikipedia'),
         ),
@@ -95,10 +105,12 @@ class WikiForm extends FormBase {
     public function submitForm(array &$form, FormStateInterface $form_state) {
       // Get the term to search
       $wiki_term = $form_state->getValue('search');
+      $this->query_type = 1;
 
       // search wikipedia for term
       $this->getWikiData($wiki_term);
       $form_state->setRebuild(True);
+      $form_state->setRedirect('leo_form_wikipedia.wiki',[parameter => '']);
     }
 
     /*
