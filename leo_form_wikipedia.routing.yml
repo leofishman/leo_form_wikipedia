@@ -5,5 +5,6 @@ leo_form_wikipedia.wiki:
     _title: 'WIKI'
     parameter: ''
   requirements:
-    _permission: 'access content'
-    
+    _access: 'TRUE'
+
+

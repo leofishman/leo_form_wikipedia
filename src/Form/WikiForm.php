@@ -50,7 +50,7 @@ class WikiForm extends FormBase {
          $form['description'] = [
            '#type' => 'item',
            '#title' => t('Wikipedia Search'),
-           '#markup' => t('You can either enter a value in the form field or provide a url parameter (/wiki/[parameter]).<br />
+           '#markup' => t('<h2> Instructions </h2>You can either enter a value in the form field or provide a url parameter (/wiki/[parameter]).<br />
                             If a URL parameter is provided then the page displays wikipedia articles containing the parameter in the title.<br />
                             If no parameter is provided, then the page displays wikipedia articles for the term provided in the "Search" form field.<br />
                             The page will display the term that is being searched.'),
@@ -110,8 +110,12 @@ class WikiForm extends FormBase {
       // search wikipedia for term
       $this->getWikiData($wiki_term);
       $form_state->setRebuild(True);
-      $form_state->setRedirect('leo_form_wikipedia.wiki',[parameter => '']);
-    }
+
+      // set page title (Should set search term as page title?
+      $request = \Drupal::request();
+      if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+        $route->setDefault('_title', 'WIKI');
+      }    }
 
     /*
      *

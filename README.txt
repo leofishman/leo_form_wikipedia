@@ -7,26 +7,3 @@
 7) Search results should include the Title, a link to the article, and the extract for the article.
 8) Your module should include functional tests and relevant documentation.
 9) Check the module into github.
-
-
-# Search form:
-    - route /wiki/{parameter}
-    - search, input text
-    - description, markup explaining what this page does
-    - term being search, input text disabled default value = query
-    - title, tilte of the article found
-    - link, link to wikipedia article found
-    - extract extract of the article found
-
-# Service guzzle http client to get wikipedia term
-# template
-    - hook alter for template suggestion
-    - twig file to show the form
-
-# Functional Tests
-    - Happy path, know term and know result for title, link and extract
-        - Empty search explaining how
-        - query string in url
-        - search form
-    - random characters (including spetials characters) for not found
-    - no connection to wikipedia
